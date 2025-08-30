@@ -6,7 +6,7 @@ export type SelectJobTypeProps = ComponentPropsWithoutRef<typeof Select>;
 export const SelectJobType = (props: SelectJobTypeProps) => {
   return (
     <Select {...props}>
-      <SelectTrigger>
+      <SelectTrigger className="w-full">
         <SelectValue placeholder="Job Type" />
       </SelectTrigger>
       <SelectContent>

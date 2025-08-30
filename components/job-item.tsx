@@ -3,6 +3,7 @@ import { Avatar, AvatarImage } from './ui/avatar';
 import { genAvatar } from '@/lib/gravatar';
 import { useMemo } from 'react';
 import { formatDistance } from 'date-fns';
+import { JobManageButtons } from './job-manage-buttons';
 
 export type JobItemProps = {
   id: string;
@@ -12,6 +13,8 @@ export type JobItemProps = {
   location: string;
   location_type: 'Remote' | 'Hybrid' | 'On-site';
   updated_at: Date;
+  manage?: boolean;
+  onManageDelete?: () => void;
 };
 
 export const JobItem = ({
@@ -22,6 +25,8 @@ export const JobItem = ({
   location,
   location_type,
   updated_at,
+  manage,
+  onManageDelete,
 }: JobItemProps) => {
   const now = useMemo(() => new Date(), []);
   return (
@@ -31,18 +36,23 @@ export const JobItem = ({
           <AvatarImage src={genAvatar(company)} />
         </Avatar>
         <div className="flex flex-col">
-          <h3 className="font-medium text-blue-600 leading-none mb-1">
-            <Link href={`/job/${id}`}>{title}</Link>
-            <span className="font-normal ml-4 text-muted-foreground">
-              {formatDistance(updated_at, now, { addSuffix: true })}
+          <div className="flex flex-row gap-1 items-center">
+            <h3 className="font-medium text-blue-600 leading-none mb-1">
+              <Link href={`/job/${id}`}>{title}</Link>
+            </h3>
+            <span className="text-sm font-normal text-muted-foreground">
+              - {formatDistance(updated_at, now, { addSuffix: true })}
             </span>
-          </h3>
+          </div>
           <span>
             {company} - {location} ({location_type})
           </span>
           <span className="text-muted-foreground">{job_type}</span>
         </div>
         <span className="flex-1" />
+        {manage ? (
+          <JobManageButtons onManageDelete={onManageDelete} id={id} />
+        ) : null}
       </div>
     </section>
   );

@@ -6,7 +6,7 @@ export type SelectLocationTypeProps = ComponentPropsWithoutRef<typeof Select>;
 export const SelectLocationType = (props: SelectLocationTypeProps) => {
   return (
     <Select {...props}>
-      <SelectTrigger>
+      <SelectTrigger className="w-full">
         <SelectValue placeholder="Location Type" />
       </SelectTrigger>
       <SelectContent>

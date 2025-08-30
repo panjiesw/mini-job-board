@@ -8,10 +8,15 @@ import {
   PARAM_JOB_TYPE,
   PARAM_LOCATION,
   PARAM_LOCATION_TYPE,
+  PARAM_RECRUITER_ID,
   PARAM_TITLE,
 } from '@/lib/constants';
 
-export const JobList = () => {
+export type JobListProps = {
+  userId?: string | null;
+};
+
+export const JobList = ({ userId }: JobListProps) => {
   const params = useSearchParams();
   const [force, setForce] = useState(0);
   const jobType = params.get(PARAM_JOB_TYPE);
@@ -25,16 +30,26 @@ export const JobList = () => {
 
   return (
     <div className="flex flex-col">
-      <JobFilter />
+      <JobFilter manage={userId != null} />
       <InfiniteList
         key={force}
         columns="id,title,updated_at,company,job_type,location,location_type"
         tableName="job"
-        renderItem={(job) => <JobItem key={job.id} {...job} />}
+        renderItem={(job) => (
+          <JobItem
+            key={job.id}
+            {...job}
+            manage={userId != null}
+            onManageDelete={() => setForce((prev) => prev + 1)}
+          />
+        )}
         trailingQuery={(query) => {
           query = query
             .eq('status', 'Open')
             .order('updated_at', { ascending: false });
+          if (userId) {
+            query = query.eq(PARAM_RECRUITER_ID, userId);
+          }
           if (title) {
             query = query.ilike(PARAM_TITLE, `%${title}%`);
           }

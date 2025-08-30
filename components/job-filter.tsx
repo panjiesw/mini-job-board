@@ -5,12 +5,23 @@ import { Input } from './ui/input';
 import { SelectJobType } from './select-job-type';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useDebouncedCallback } from 'use-debounce';
-import { PARAM_JOB_TYPE, PARAM_LOCATION, PARAM_LOCATION_TYPE, PARAM_TITLE } from '@/lib/constants';
+import {
+  PARAM_JOB_TYPE,
+  PARAM_LOCATION,
+  PARAM_LOCATION_TYPE,
+  PARAM_TITLE,
+} from '@/lib/constants';
 import { SelectLocationType } from './select-location-type';
+import { Button } from './ui/button';
+import Link from 'next/link';
+import { Newspaper } from 'lucide-react';
+import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
 
-export type JobFilterProps = ComponentPropsWithoutRef<'div'> & {};
+export type JobFilterProps = ComponentPropsWithoutRef<'div'> & {
+  manage?: boolean;
+};
 
-export const JobFilter = ({ className, ...props }: JobFilterProps) => {
+export const JobFilter = ({ className, manage, ...props }: JobFilterProps) => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
@@ -55,6 +66,20 @@ export const JobFilter = ({ className, ...props }: JobFilterProps) => {
           );
         }}
       />
+      {manage ? (
+        <Link href="/jobs/new">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button size="icon" className="bg-blue-500 hover:bg-blue-400">
+                <Newspaper />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              Add New Job Post
+            </TooltipContent>
+          </Tooltip>
+        </Link>
+      ) : null}
     </div>
   );
 };
