@@ -146,3 +146,6 @@ What I would improve if given more time
     - Dashboard for Employee to track their application
     - Shows submitted applications in Recruiter Dashboard
   - Enhanced profile customization
+  - More advanced content editor
+    - With shortcut to style formatting
+    - Capability to upload image / files
