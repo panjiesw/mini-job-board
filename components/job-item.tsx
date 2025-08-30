@@ -4,6 +4,9 @@ import { genAvatar } from '@/lib/gravatar';
 import { useMemo } from 'react';
 import { formatDistance } from 'date-fns';
 import { JobManageButtons } from './job-manage-buttons';
+import { formatInTimeZone, toZonedTime } from 'date-fns-tz';
+import { getCurrentTZString } from '@/lib/dates';
+import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
 
 export type JobItemProps = {
   id: string;
@@ -41,7 +44,23 @@ export const JobItem = ({
               <Link href={`/job/${id}`}>{title}</Link>
             </h3>
             <span className="text-sm font-normal text-muted-foreground">
-              - {formatDistance(updated_at, now, { addSuffix: true })}
+              -{' '}
+              <Tooltip>
+                <TooltipTrigger>
+                  {formatDistance(
+                    toZonedTime(updated_at, getCurrentTZString()),
+                    now,
+                    { addSuffix: true },
+                  )}
+                </TooltipTrigger>
+                <TooltipContent>
+                  {formatInTimeZone(
+                    updated_at,
+                    getCurrentTZString(),
+                    'yyyy-MM-dd HH:mm:ss zzz',
+                  )}
+                </TooltipContent>
+              </Tooltip>
             </span>
           </div>
           <span>

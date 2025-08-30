@@ -149,3 +149,4 @@ What I would improve if given more time
   - More advanced content editor
     - With shortcut to style formatting
     - Capability to upload image / files
+  - Improve mobile site experience

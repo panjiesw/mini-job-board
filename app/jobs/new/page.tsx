@@ -13,7 +13,7 @@ export default async function NewJob() {
 
   return (
     <DefaultLayout>
-      <main className="flex-1 px-4 min-w-2xl">
+      <main className="flex-1 px-4 md:min-w-2xl min-w-lg">
         <h2 className="font-semibold text-xl mb-4">Add New Job Post</h2>
         <JobForm />
       </main>

@@ -2,12 +2,17 @@ import { DefaultLayout } from '@/components/default-layout';
 import { JobManageButtons } from '@/components/job-manage-buttons';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import { PARAM_ID, TABLE_JOB } from '@/lib/constants';
 import { getCurrentTZString } from '@/lib/dates';
 import { genAvatar } from '@/lib/gravatar';
 import { createClient } from '@/lib/supabase/server';
 import { formatDistance } from 'date-fns';
-import { toZonedTime } from 'date-fns-tz';
+import { formatInTimeZone, toZonedTime } from 'date-fns-tz';
 import { Check } from 'lucide-react';
 import { notFound } from 'next/navigation';
 
@@ -29,7 +34,7 @@ export default async function Job(props: PageProps<'/job/[id]'>) {
 
   return (
     <DefaultLayout>
-      <main className="flex-1 flex flex-col gap-6 px-4 min-w-2xl">
+      <main className="flex-1 flex flex-col gap-6 px-4 md:min-w-2xl min-w-lg">
         <div className="flex flex-row items-center gap-2">
           <Avatar className="rounded-xs border-muted-foreground border-[1px] size-14">
             <AvatarImage src={genAvatar(data.company)} />
@@ -48,11 +53,22 @@ export default async function Job(props: PageProps<'/job/[id]'>) {
           </div>
           <span className="text-muted-foreground">
             {data.location} {' - '}
-            {formatDistance(
-              toZonedTime(data.updated_at, getCurrentTZString()),
-              new Date(),
-              { addSuffix: true },
-            )}
+            <Tooltip>
+              <TooltipTrigger>
+                {formatDistance(
+                  toZonedTime(data.updated_at, getCurrentTZString()),
+                  new Date(),
+                  { addSuffix: true },
+                )}
+              </TooltipTrigger>
+              <TooltipContent>
+                {formatInTimeZone(
+                  data.updated_at,
+                  getCurrentTZString(),
+                  'yyyy-MM-dd HH:mm:ss zzz',
+                )}
+              </TooltipContent>
+            </Tooltip>
           </span>
           <span className="text-muted-foreground">
             Posted by {data.user_profile.display_name}

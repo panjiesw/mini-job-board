@@ -37,7 +37,7 @@ export const JobFilter = ({ className, manage, ...props }: JobFilterProps) => {
   return (
     <div
       className={cn(
-        'mb-4 flex flex-row justify-center gap-2 min-w-2xl',
+        'mb-4 flex flex-row justify-center gap-2 md:min-w-2xl min-w-lg',
         className,
       )}
       {...props}
